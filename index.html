@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yapay Zeka Dersleri - Kod Çalışma Kağıdı & Kompendiyum</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0d14;
+      --bg-secondary: #101522;
+      --bg-card: rgba(22, 28, 45, 0.75);
+      --bg-code: #0b0f19;
+      --bg-output: #060911;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(99, 102, 241, 0.5);
+      
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --accent-primary: #6366f1;
+      --accent-primary-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-purple: #a855f7;
+
+      --code-keyword: #c084fc;
+      --code-function: #60a5fa;
+      --code-string: #34d399;
+      --code-comment: #64748b;
+      --code-number: #fbbf24;
+      
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+      --shadow-glow: 0 0 35px rgba(99, 102, 241, 0.15);
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Fira Code', monospace;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #f1f5f9;
+      --bg-card: rgba(255, 255, 255, 0.95);
+      --bg-code: #0f172a;
+      --bg-output: #1e293b;
+      --border-color: rgba(0, 0, 0, 0.08);
+      --border-focus: rgba(99, 102, 241, 0.6);
+      
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background glow effect */
+    .ambient-glow {
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1000px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, rgba(168, 85, 247, 0.06) 40%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header & Navigation */
+    header.site-header {
+      position: sticky;
+      top: 0;
+      background: rgba(10, 13, 20, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 100;
+      padding: 16px 0;
+      transition: background-color 0.3s ease;
+    }
+
+    [data-theme="light"] header.site-header {
+      background: rgba(248, 250, 252, 0.88);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .brand-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+
+    .brand-badge svg {
+      width: 24px;
+      height: 24px;
+      color: #fff;
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-main);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn:hover {
+      border-color: var(--accent-primary);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-primary), #4f46e5);
+      color: #fff;
+      border: none;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #4f46e5, #4338ca);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 56px 0 36px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      color: #a5b4fc;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    [data-theme="light"] .hero-title {
+      background: linear-gradient(135deg, #0f172a 30%, #4338ca 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      max-width: 760px;
+      margin: 0 auto 36px;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 44px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: left;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(99, 102, 241, 0.35);
+    }
+
+    .stat-val {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .stat-val span {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent-cyan);
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Interactive Neuron Simulator */
+    .neuron-box {
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.4), rgba(15, 23, 42, 0.7));
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 40px;
+      box-shadow: var(--shadow-glow);
+    }
+
+    [data-theme="light"] .neuron-box {
+      background: linear-gradient(135deg, rgba(238, 242, 255, 0.8), rgba(255, 255, 255, 0.9));
+      border: 1px solid rgba(99, 102, 241, 0.25);
+    }
+
+    .neuron-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .neuron-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .neuron-pill {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      background: rgba(168, 85, 247, 0.15);
+      color: #d8b4fe;
+      font-weight: 600;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .neuron-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .ctrl-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .ctrl-group label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .ctrl-group input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent-primary);
+      cursor: pointer;
+    }
+
+    .neuron-result-panel {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .formula-math {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: var(--accent-cyan);
+    }
+
+    .neuron-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+
+    .neuron-active {
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .neuron-silent {
+      background: rgba(244, 63, 94, 0.15);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.35);
+    }
+
+    /* Control Bar: Search & Filters */
+    .controls-panel {
+      position: sticky;
+      top: 76px;
+      background: rgba(10, 13, 20, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 18px 22px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-md);
+      z-index: 90;
+      transition: all 0.3s ease;
+    }
+
+    [data-theme="light"] .controls-panel {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+
+    .search-row {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .search-input-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .search-input-wrap svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--text-dim);
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 11px 16px 11px 42px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .filter-pills-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tabs-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab-pill {
+      padding: 7px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tab-pill:hover {
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .tab-pill.active {
+      background: var(--accent-primary);
+      color: #fff;
+      border-color: var(--accent-primary);
+      box-shadow: 0 2px 10px var(--accent-glow);
+    }
+
+    .tab-badge {
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      background: rgba(255, 255, 255, 0.15);
+      color: inherit;
+    }
+
+    .actions-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Code Cards Grid */
+    .catalog-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .code-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(12px);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .code-card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-header {
+      padding: 16px 24px;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge-slide {
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      background: rgba(99, 102, 241, 0.15);
+      color: #a5b4fc;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      font-family: var(--font-mono);
+    }
+
+    .badge-category {
+      font-size: 0.74rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      background: rgba(6, 182, 212, 0.12);
+      color: #67e8f9;
+      border: 1px solid rgba(6, 182, 212, 0.25);
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-top: 4px;
+    }
+
+    /* Card Body (Two Columns) */
+    .card-body {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 0;
+    }
+
+    @media (max-width: 960px) {
+      .card-body {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .col-info {
+      padding: 24px;
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    @media (max-width: 960px) {
+      .col-info {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+      }
+    }
+
+    .info-section-title {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .info-summary {
+      font-size: 0.92rem;
+      color: var(--text-main);
+      line-height: 1.55;
+    }
+
+    .explanation-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .explanation-item {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      position: relative;
+      padding-left: 18px;
+    }
+
+    .explanation-item::before {
+      content: "•";
+      position: absolute;
+      left: 4px;
+      color: var(--accent-primary);
+      font-weight: bold;
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+
+    .explanation-item code {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #93c5fd;
+    }
+
+    /* Code & Output Column */
+    .col-code {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-code);
+    }
+
+    .code-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .code-lang {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.74rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .copy-btn.copied {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+
+    pre.code-block {
+      padding: 18px;
+      margin: 0;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+      white-space: pre;
+    }
+
+    /* Output Panel */
+    .output-container {
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-output);
+    }
+
+    .output-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 18px;
+      background: rgba(0, 0, 0, 0.35);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .output-label {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--accent-emerald);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .output-toggle-icon {
+      width: 14px;
+      height: 14px;
+      color: var(--text-dim);
+      transition: transform 0.2s ease;
+    }
+
+    .output-container.collapsed .output-toggle-icon {
+      transform: rotate(-90deg);
+    }
+
+    .output-container.collapsed .output-content {
+      display: none;
+    }
+
+    .output-content {
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #38bdf8;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .output-content.chart-output {
+      color: #a7f3d0;
+      border-left: 3px solid var(--accent-emerald);
+      padding-left: 14px;
+      background: rgba(16, 185, 129, 0.04);
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+
+    /* Footer */
+    footer.site-footer {
+      border-top: 1px solid var(--border-color);
+      padding: 40px 0;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.84rem;
+    }
+
+    footer a {
+      color: var(--accent-primary);
+      text-decoration: none;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: #fff !important;
+        color: #000 !important;
+      }
+      header.site-header, .controls-panel, .ambient-glow, .neuron-box, .header-actions, .copy-btn, .hero-section {
+        display: none !important;
+      }
+      .code-card {
+        break-inside: avoid;
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+        margin-bottom: 24px;
+        background: #fff !important;
+      }
+      .card-body {
+        grid-template-columns: 1fr !important;
+      }
+      pre.code-block {
+        color: #111 !important;
+        background: #f8fafc !important;
+        font-size: 8pt !important;
+      }
+      .output-content {
+        color: #000 !important;
+        background: #f1f5f9 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-glow"></div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-content">
+      <div class="brand-wrap">
+        <div class="brand-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">Yapay Zeka Kod Kompendiyumu</div>
+          <div class="brand-subtitle">Sunumlardaki Tüm Kodlar, Fonksiyon Açıklamaları ve Çıktıları</div>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <button class="btn" id="themeToggleBtn" title="Tema Değiştir">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+          </svg>
+          <span id="themeBtnText">Açık Tema</span>
+        </button>
+        <button class="btn btn-primary" onclick="window.print()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"/>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+            <rect x="6" y="14" width="12" height="8"/>
+          </svg>
+          Yazdır / PDF
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+        Ders ve Sınav Hazırlık Rehberi
+      </div>
+      <h1 class="hero-title">Yapay Zeka Çalışma Kağıdı</h1>
+      <p class="hero-desc">
+        Hafta 1-2 Teorik Nöron modellerinden Hafta 6 Çoklu Sınıflandırma algoritmalarına kadar sunumlarda geçen 
+        <strong>her bir Python kod satırı</strong>, ne işe yaradığı, parametre açıklamaları ve gerçek çalışma çıktılarıyla tek bir ekranda.
+      </p>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-val" id="totalCodeCount">47 <span>Modül</span></div>
+          <div class="stat-label">Toplam Kod Bloğu & Adım</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">5 <span>Ders</span></div>
+          <div class="stat-label">Hafta 1'den Hafta 6'ya Tam Kapsam</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">6+1 <span>Model</span></div>
+          <div class="stat-label">KNN, Lojistik, Ağaç, Orman, SVM, Bayes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">2 <span>Veri Seti</span></div>
+          <div class="stat-label">Iris & Wine Karşılaştırmalı Analiz</div>
+        </div>
+      </div>
+
+      <!-- Interactive Neuron Box -->
+      <div class="neuron-box">
+        <div class="neuron-head">
+          <div class="neuron-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-purple)" stroke-width="2">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+            İnteraktif Yapay Nöron Modeli (Slayt 54 Simülatörü)
+          </div>
+          <div class="neuron-pill">z = w₁x₁ + w₂x₂ + b</div>
+        </div>
+        
+        <div class="neuron-controls">
+          <div class="ctrl-group">
+            <label>Girdi 1 (x₁): <span id="v_x1">2.0</span></label>
+            <input type="range" id="rng_x1" min="-5" max="5" step="0.5" value="2.0">
+          </div>
+          <div class="ctrl-group">
+            <label>Ağırlık 1 (w₁): <span id="v_w1">0.5</span></label>
+            <input type="range" id="rng_w1" min="-2" max="2" step="0.1" value="0.5">
+          </div>
+          <div class="ctrl-group">
+            <label>Girdi 2 (x₂): <span id="v_x2">3.0</span></label>
+            <input type="range" id="rng_x2" min="-5" max="5" step="0.5" value="3.0">
+          </div>
+          <div class="ctrl-group">
+            <label>Ağırlık 2 (w₂): <span id="v_w2">0.2</span></label>
+            <input type="range" id="rng_w2" min="-2" max="2" step="0.1" value="0.2">
+          </div>
+          <div class="ctrl-group">
+            <label>Sabit (Bias - b): <span id="v_b">-1.0</span></label>
+            <input type="range" id="rng_b" min="-5" max="5" step="0.5" value="-1.0">
+          </div>
+        </div>
+
+        <div class="neuron-result-panel">
+          <div class="formula-math" id="neuronFormulaText">
+            z = (0.5 × 2.0) + (0.2 × 3.0) + (-1.0) = 0.60
+          </div>
+          <div id="neuronStatusBadge" class="neuron-status neuron-active">
+            ● Çıktı: 1 (Nöron Ateşlendi / Aktif)
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Controls Panel (Sticky) -->
+    <section class="controls-panel">
+      <div class="search-row">
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="searchInput" class="search-input" placeholder="Kod, fonksiyon, metot veya slayt ara... (Örn: StandardScaler, KNN, describe, F1)">
+        </div>
+        <div class="actions-group">
+          <button class="btn" id="toggleAllOutputsBtn">Çıktıları Daralt/Aç</button>
+        </div>
+      </div>
+
+      <div class="filter-pills-row">
+        <div class="tabs-group" id="weekTabs">
+          <button class="tab-pill active" data-week="all">Tümü <span class="tab-badge" id="badge-all">47</span></button>
+          <button class="tab-pill" data-week="theory">Teori & Nöron <span class="tab-badge">1</span></button>
+          <button class="tab-pill" data-week="h3">Hafta 3: Ön İşleme <span class="tab-badge">14</span></button>
+          <button class="tab-pill" data-week="h4">Hafta 4: EDA & Görsel <span class="tab-badge">13</span></button>
+          <button class="tab-pill" data-week="h5">Hafta 5: ML Temelleri <span class="tab-badge">9</span></button>
+          <button class="tab-pill" data-week="h6">Hafta 6: Sınıflandırma <span class="tab-badge">10</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catalog Cards Container -->
+    <section class="catalog-list" id="catalogList">
+      <!-- Cards rendered via JS -->
+    </section>
+
+    <div class="empty-state" id="emptyState" style="display: none;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <h3>Eşleşen kod bulunamadı</h3>
+      <p>Arama filtrenizi temizleyip farklı bir anahtar kelime deneyebilirsiniz.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Yapay Zeka Dersi Kod & Slayt Çalışma Kağıdı • Tüm hakları ders müfredatına aittir.</p>
+      <p style="margin-top: 6px; font-size: 0.78rem;">Python 3.11+ • Scikit-Learn • Pandas • Matplotlib • Seaborn</p>
+    </div>
+  </footer>
+
+  <script>
+    const CATALOG = [{"id": "theo-01", "week": "Hafta 1-2 & Giriş", "week_id": "theory", "slide_no": 54, "source_pdf": "Yapay_Zeka_Algoritmalar_Turing_Makinesi_ve_Beyin.pdf", "title": "Basit Bir Yapay Nöron Modeli (Perceptron Hesaplaması)", "category": "Teori & Matematik", "difficulty": "Başlangıç", "summary": "Biyolojik nöronun girdi (dendrit), ağırlık (sinaps), gövde (toplama) ve akson (çıktı) mekanizmasını matematiksel formülle simüle eder.", "detailed_explanation": ["Girdiler (x₁, x₂): Duyu veya önceki katmandan gelen sinyaller.", "Ağırlıklar (w₁, w₂): Her girdinin nöron üzerindeki etki gücü / katsayısı.", "Sabit Değer (Bias / b): Nöronun uyarılma eşiğini düzenleyen kaydırma terimi.", "Toplama İşlemi (Net Girdi): z = (w₁ · x₁) + (w₂ · x₂) + b", "Aktivasyon Kuralı (Eşik Fonksiyonu): Eğer z > 0 ise çıktı 1 (ateşleme), aksi halde 0 (sessiz)."], "code": "# Basit Yapay Nöron Hesaplaması\nx1, x2 = 2, 3       # Girdiler\nw1, w2 = 0.5, 0.2   # Ağırlıklar\nb = -1              # Sabit değer (Bias)\n\n# 1. Ağırlıklı toplamı hesapla\nz = (w1 * x1) + (w2 * x2) + b\n# z = (0.5 * 2) + (0.2 * 3) - 1 = 1.0 + 0.6 - 1 = 0.6\n\n# 2. Aktivasyon (Eşik) Kuralı\ncikti = 1 if z > 0 else 0\n\nprint(f\"Net Girdi (z): {z:.1f}\")\nprint(f\"Nöron Ateşlendi mi (Çıktı): {cikti}\")", "output_type": "text", "output": "Net Girdi (z): 0.6\nNöron Ateşlendi mi (Çıktı): 1 (Nöron Aktif)"}, {"id": "h3-01", "week": "Hafta 3", "week_id": "h3", "slide_no": 14, "source_pdf": "HAFTA3.pdf", "title": "StandardScaler ile Basit Sayısal Ölçekleme", "category": "Ön İşleme & Ölçekleme", "difficulty": "Başlangıç", "summary": "Sayısal sütundaki değerleri ortalaması 0 ve standart sapması 1 olacak şekilde z-score formülü ile dönüştürür.", "detailed_explanation": ["orneksayilar = np.array([[2], [4], [6], [8], [10]]): İki boyutlu 5 satırlı sayı dizisi tanımlar (Ortalama = 6.0, Standart Sapma = 2.83).", "scaler_basit = StandardScaler(): Ölçekleme nesnesini başlatır.", "fit_transform(): Dizinin ortalamasını ve sapmasını öğrenir (fit) ve formülü uygulayarak dönüştürür (transform): z = (x - mean) / std."], "code": "import numpy as np\nfrom sklearn.preprocessing import StandardScaler\n\n# 5 farklı sayıdan oluşan 2 boyutlu dizi\norneksayilar = np.array([[2], [4], [6], [8], [10]])\n\nscaler_basit = StandardScaler()\nsonuc = scaler_basit.fit_transform(orneksayilar)\n\nprint(\"Ölçeklenmiş Değerler (Ortalama 0, Std 1):\")\nprint(np.round(sonuc, 2))", "output_type": "text", "output": "Ölçeklenmiş Değerler (Ortalama 0, Std 1):\n[[-1.41]\n [-0.71]\n [ 0.  ]\n [ 0.71]\n [ 1.41]]"}, {"id": "h3-02", "week": "Hafta 3", "week_id": "h3", "slide_no": 21, "source_pdf": "HAFTA3.pdf", "title": "Conda Çalışma Ortamının Kurulması", "category": "Ortam Hazırlığı", "difficulty": "Başlangıç", "summary": "Projenin diğer Python kütüphaneleriyle çakışmaması için bağımsız bir Anaconda sanal ortamı kurar.", "detailed_explanation": ["conda create -n yz-hafta3 python=3.11: Python 3.11 sürümünü içeren 'yz-hafta3' adında temiz bir ortam yaratır.", "conda activate yz-hafta3: Oluşturulan ortama geçiş yapar.", "conda install numpy pandas scikit-learn=1.8: Sayısal analiz ve makine öğrenmesi kütüphanelerini yükler.", "conda install -c conda-forge jupyterlab: Web tabanlı etkileşimli Jupyter Lab editörünü kurar.", "jupyter lab: Tarayıcıda çalışma ortamını açar."], "code": "# Terminal veya Anaconda Prompt üzerinde çalıştırılır:\nconda create -n yz-hafta3 python=3.11\nconda activate yz-hafta3\nconda install numpy pandas scikit-learn=1.8\nconda install -c conda-forge jupyterlab\njupyter lab", "output_type": "terminal", "output": "Channels:\n - defaults\n - conda-forge\nExecuting transaction: done\n# To activate this environment, use:\n#     conda activate yz-hafta3\nJupyter Server is running at: http://localhost:8888/lab"}, {"id": "h3-03", "week": "Hafta 3", "week_id": "h3", "slide_no": 23, "source_pdf": "HAFTA3.pdf", "title": "Veri Ön İşleme Kütüphanelerinin Yüklenmesi", "category": "Kütüphaneler", "difficulty": "Başlangıç", "summary": "Veri ön işleme ve boru hattı mimarisinde kullanılacak temel Scikit-Learn araçlarını ve veri setlerini içe aktarır.", "detailed_explanation": ["numpy & pandas: Matris hesaplamaları ve DataFrame veri tablolarını yönetir.", "load_iris, load_wine: Scikit-learn ile gelen hazır test veri setlerini çeker.", "train_test_split: Veriyi eğitim ve test olarak bağımsız iki parçaya böler.", "StandardScaler: Özellikleri ölçeklendirir.", "OneHotEncoder: Kategorik metinleri ikili (0-1) sütunlara çevirir.", "SimpleImputer: Boş (eksik) hücreleri istatistiksel değerlerle doldurur.", "ColumnTransformer & Pipeline: Farklı sütun tiplerine farklı adımlar uygulayan tek parça iş akışı kurar."], "code": "import numpy as np\nimport pandas as pd\nfrom sklearn.datasets import load_iris, load_wine\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler, OneHotEncoder\nfrom sklearn.impute import SimpleImputer\nfrom sklearn.compose import ColumnTransformer\nfrom sklearn.pipeline import Pipeline", "output_type": "text", "output": "(Çıktı yok - Kütüphaneler başarıyla içe aktarıldı)"}, {"id": "h3-04", "week": "Hafta 3", "week_id": "h3", "slide_no": 25, "source_pdf": "HAFTA3.pdf", "title": "Iris Tablosunun Yüklenmesi ve İlk Satırlar", "category": "Veri Yükleme", "difficulty": "Başlangıç", "summary": "Iris çiçek veri setini Pandas DataFrame formatında belleğe alır ve temel boyutlarını inceler.", "detailed_explanation": ["as_frame=True: Verinin ham numpy dizisi yerine sütun isimlerine sahip Pandas DataFrame olarak dönmesini sağlar.", ".copy(): Verinin özgün halini bozmamak için bağımsız bir kopyasını üretir.", "head(): İlk 5 çiçeğe ait özellikleri listeler.", "shape: (150, 4) -> 150 çiçek satırı ve 4 ölçüm sütunu olduğunu gösterir.", "target_names: Çiçeğin 3 türünü verir ('setosa', 'versicolor', 'virginica')."], "code": "iris = load_iris(as_frame=True)\nX_iris = iris.data.copy()\ny_iris = iris.target.copy()\n\nprint(\"İlk 5 Satır:\")\nprint(X_iris.head())\nprint(\"\\nTablo Boyutu:\", X_iris.shape)\nprint(\"Sınıf İsimleri:\", iris.target_names)", "output_type": "table", "output": "İlk 5 Satır:\n   sepal length (cm)  sepal width (cm)  petal length (cm)  petal width (cm)\n0                5.1               3.5                1.4               0.2\n1                4.9               3.0                1.4               0.2\n2                4.7               3.2                1.3               0.2\n3                4.6               3.1                1.5               0.2\n4                5.0               3.6                1.4               0.2\n\nTablo Boyutu: (150, 4)\nSınıf İsimleri: ['setosa' 'versicolor' 'virginica']"}, {"id": "h3-05", "week": "Hafta 3", "week_id": "h3", "slide_no": 27, "source_pdf": "HAFTA3.pdf", "title": "Tablonun Temel Kontrolü (info, describe, isna)", "category": "Veri İnceleme", "difficulty": "Başlangıç", "summary": "Verideki eksik hücreleri, veri tiplerini ve sütunların sayısal istatistiklerini kontrol eder.", "detailed_explanation": ["X_iris.info(): Her sütunun adını, dolu kayıt adedini (non-null) ve veri tipini (float64) listeler.", "describe().round(2): Ortalama, standart sapma, minimum, maksimum ve çeyrek değerleri virgülden sonra 2 basamakla özetler.", "isna().sum(): Eksik veri olup olmadığını kontrol eder (tüm sütunlarda 0 eksik)."], "code": "X_iris.info()\nprint(\"\\nSayısal İstatistik Özeti:\")\nprint(X_iris.describe().round(2))\n\nprint(\"\\nEksik Değer Kontrolü:\")\nprint(X_iris.isna().sum())", "output_type": "text", "output": "<class 'pandas.core.frame.DataFrame'>\nRangeIndex: 150 entries, 0 to 149\nData columns (total 4 columns):\n #   Column             Non-Null Count  Dtype  \n---  ------             --------------  -----  \n 0   sepal length (cm)  150 non-null    float64\n 1   sepal width (cm)   150 non-null    float64\n 2   petal length (cm)  150 non-null    float64\n 3   petal width (cm)   150 non-null    float64\ndtypes: float64(4)\n\nSayısal İstatistik Özeti:\n       sepal length (cm)  sepal width (cm)  petal length (cm)  petal width (cm)\ncount             150.00            150.00             150.00            150.00\nmean                5.84              3.06               3.76              1.20\nstd                 0.83              0.44               1.77              0.76\nmin                 4.30              2.00               1.00              0.10\n25%                 5.10              2.80               1.60              0.30\n50%                 5.80              3.00               4.35              1.30\n75%                 6.40              3.30               5.10              1.80\nmax                 7.90              4.40               6.90              2.50\n\nEksik Değer Kontrolü:\nsepal length (cm)    0\nsepal width (cm)     0\npetal length (cm)    0\npetal width (cm)     0\ndtype: int64"}, {"id": "h3-06", "week": "Hafta 3", "week_id": "h3", "slide_no": 29, "source_pdf": "HAFTA3.pdf", "title": "Sütun Seçme ve Koşullu Satır Filtreleme", "category": "Veri İşleme", "difficulty": "Başlangıç", "summary": "Belirli bir sütunu seçer ve mantıksal koşul (> 7 cm) belirterek ilgilenilen alt küme kayıtlarını çeker.", "detailed_explanation": ["X_iris['sepal length (cm)']: Yalnızca çanak yaprak uzunluğu sütununu bir Pandas Series olarak seçer.", "condition = X_iris['sepal length (cm)'] > 7: Her satır için Doğru/Yanlış (True/False) boolean maske dizisi üretir.", "loc[condition, ['sepal length (cm)', 'sepal width (cm)']]: Yalnızca şartı sağlayan satırları ve belirtilen iki sütunu getirir."], "code": "# Tek bir sütunun ilk beş satırı\nprint(X_iris[\"sepal length (cm)\"].head())\n\n# Çanak uzunluğu 7 cm'den büyük olan çiçekleri filtreleme\ncondition = X_iris[\"sepal length (cm)\"] > 7\nfiltrelenmis = X_iris.loc[condition, [\"sepal length (cm)\", \"sepal width (cm)\"]]\n\nprint(f\"\\n7 cm'den uzun çiçek sayısı: {len(filtrelenmis)}\")\nprint(filtrelenmis)", "output_type": "table", "output": "0    5.1\n1    4.9\n2    4.7\n3    4.6\n4    5.0\nName: sepal length (cm), dtype: float64\n\n7 cm'den uzun çiçek sayısı: 12\n     sepal length (cm)  sepal width (cm)\n102                7.1               3.0\n105                7.6               3.0\n107                7.3               2.9\n109                7.2               3.6\n117                7.7               3.8\n118                7.7               2.6\n122                7.7               2.8\n125                7.2               3.2\n130                7.4               2.8\n131                7.9               3.8\n135                7.7               3.0"}, {"id": "h3-07", "week": "Hafta 3", "week_id": "h3", "slide_no": 30, "source_pdf": "HAFTA3.pdf", "title": "Iris Eğitim ve Test Ayrımı (train_test_split)", "category": "Model Hazırlığı", "difficulty": "Orta", "summary": "Veri setini model eğitimi (%80) ve nihai performans testi (%20) olarak sınıf oranlarını koruyarak böler.", "detailed_explanation": ["test_size=0.20: Toplam 150 kaydın %20'si olan 30 kaydı teste ayırır, 120 kaydı eğitime bırakır.", "random_state=42: Rastgele bölme işlemini sabitler; kod her çalıştığında tam olarak aynı bölünme elde edilir.", "stratify=y_iris: Çiçek türlerinin (her biri 50 adet) eğitim ve test kümelerinde tam olarak eşit oranda (40 eğitim, 10 test) dağılmasını sağlar."], "code": "Xi_train, Xi_test, yi_train, yi_test = train_test_split(\n    X_iris, y_iris,\n    test_size=0.20,\n    random_state=42,\n    stratify=y_iris\n)\n\nprint(\"Eğitim Giriş Boyutu (X_train):\", Xi_train.shape)\nprint(\"Test Giriş Boyutu (X_test):\", Xi_test.shape)\nprint(\"Eğitim Etiket Sayısı (y_train):\", len(yi_train))\nprint(\"Test Etiket Sayısı (y_test):\", len(yi_test))", "output_type": "text", "output": "Eğitim Giriş Boyutu (X_train): (120, 4)\nTest Giriş Boyutu (X_test): (30, 4)\nEğitim Etiket Sayısı (y_train): 120\nTest Etiket Sayısı (y_test): 30"}, {"id": "h3-08", "week": "Hafta 3", "week_id": "h3", "slide_no": 32, "source_pdf": "HAFTA3.pdf", "title": "StandardScaler ile Eğitim ve Test Dönüşümü", "category": "Ön İşleme & Ölçekleme", "difficulty": "Orta", "summary": "Eğitim setinden ortalama ve standart sapmayı öğrenir, test verisini sızıntı olmadan bu kurala göre dönüştürür.", "detailed_explanation": ["scaler.fit_transform(Xi_train): Yalnızca eğitim verisine bakarak her sütunun ortalamasını ve sapmasını öğrenir (fit) ve ölçekler.", "scaler.transform(Xi_test): Test verisine asla fit UYGULANMAZ! Veri sızıntısını (Data Leakage) önlemek için eğitimden öğrenilen parametrelerle dönüştürülür.", "axis=0: Ortalamanın her özellik (sütun) bazında ayrı ayrı hesaplandığını belirtir."], "code": "scaler = StandardScaler()\n\n# Eğitim verisiyle öğren ve dönüştür\nZi_train = scaler.fit_transform(Xi_train)\n\n# Test verisine SADECE transform uygula (Veri sızıntısını engelle)\nZi_test = scaler.transform(Xi_test)\n\nprint(\"Eğitim Ortalamaları (Hedef ~0):\", np.round(Zi_train.mean(axis=0), 2))\nprint(\"Eğitim Sapmaları (Hedef ~1):\", np.round(Zi_train.std(axis=0), 2))\nprint(\"Test Ortalamaları:\", np.round(Zi_test.mean(axis=0), 2))", "output_type": "text", "output": "Eğitim Ortalamaları (Hedef ~0): [ 0. -0.  0. -0.]\nEğitim Sapmaları (Hedef ~1): [1. 1. 1. 1.]\nTest Ortalamaları: [-0.07  0.03 -0.06 -0.05]"}, {"id": "h3-09", "week": "Hafta 3", "week_id": "h3", "slide_no": 35, "source_pdf": "HAFTA3.pdf", "title": "İkinci Veri Seti: Wine Tablosunun Yüklenmesi", "category": "Veri Yükleme", "difficulty": "Başlangıç", "summary": "178 şarap örneğinde 13 kimyasal ölçüm ve 3 üretici sınıfı barındıran Wine veri setini yükler.", "detailed_explanation": ["load_wine(as_frame=True): Şarap kimyasal analiz veri setini yükler.", "X_wine.shape: (178, 13) -> 178 şarap numunesi, 13 kimyasal özellik (alkol, malik asit, kül, magnezyum vb.).", "y_wine: Üç farklı İtalyan şarap üreticisine ait sınıf kodları (0, 1, 2)."], "code": "wine = load_wine(as_frame=True)\nX_wine = wine.data.copy()\ny_wine = wine.target.copy()\n\nprint(\"Wine İlk 3 Satır:\")\nprint(X_wine.head(3))\nprint(\"\\nWine Boyut:\", X_wine.shape)\nprint(\"Özellik Sayısı:\", X_wine.shape[1])\nprint(\"Sınıf İsimleri:\", wine.target_names)", "output_type": "table", "output": "Wine İlk 3 Satır:\n   alcohol  malic_acid   ash  alcalinity_of_ash  magnesium  ...  proline\n0    14.23        1.71  2.43               15.6      127.0  ...   1065.0\n1    13.20        1.78  2.14               11.2      100.0  ...   1050.0\n2    13.16        2.36  2.67               18.6      101.0  ...   1185.0\n\nWine Boyut: (178, 13)\nÖzellik Sayısı: 13\nSınıf İsimleri: ['class_0' 'class_1' 'class_2']"}, {"id": "h3-10", "week": "Hafta 3", "week_id": "h3", "slide_no": "36-37", "source_pdf": "HAFTA3.pdf", "title": "Wine Verisine Sentetik Problem Ekleme (Eksik Veri & Kategori)", "category": "Veri Manipülasyonu", "difficulty": "Orta", "summary": "Ön işleme tekniklerini uygulamalı gösterebilmek için yapay olarak eksik değerler (NaN) ve kategorik cihaz sütunu ekler.", "detailed_explanation": ["loc[[0, 10, 20], 'alcohol'] = np.nan: 0, 10 ve 20 indisli satırların alkol değerini bilerek boş (NaN) bırakır.", "rng.choice(['A', 'B', 'C']): Her şarabın ölçümünü yapan cihazı rastgele A, B veya C olarak atar.", "value_counts(): Her cihaz ile kaç ölçüm yapıldığını sayar."], "code": "# Bilerek üç satıra eksik veri (NaN) ekliyoruz\nX_wine.loc[[0, 10, 20], \"alcohol\"] = np.nan\n\n# Kategorik 'cihaz' sütunu ekliyoruz\nrng = np.random.default_rng(42)\nX_wine[\"cihaz\"] = rng.choice([\"A\", \"B\", \"C\"], size=len(X_wine))\n\nprint(\"Eksik alcohol hücre sayısı:\", X_wine[\"alcohol\"].isna().sum())\nprint(\"\\nCihaz kategorilerinin dağılımı:\")\nprint(X_wine[\"cihaz\"].value_counts())", "output_type": "text", "output": "Eksik alcohol hücre sayısı: 3\n\nCihaz kategorilerinin dağılımı:\ncihaz\nA    63\nB    60\nC    55\nName: count, dtype: int64"}, {"id": "h3-11", "week": "Hafta 3", "week_id": "h3", "slide_no": 38, "source_pdf": "HAFTA3.pdf", "title": "Wine Eğitim ve Test Ayrımı", "category": "Model Hazırlığı", "difficulty": "Orta", "summary": "Manipüle edilmiş Wine veri setini ön işleme adımları öncesinde %80 eğitim ve %20 test olarak böler.", "detailed_explanation": ["Önce böl, sonra doldur kuralı: Doldurma ve ölçekleme istatistikleri test setini görmemelidir.", "num_cols: 'cihaz' haricindeki 13 sayısal sütunun isimlerini saklar."], "code": "Xw_train, Xw_test, yw_train, yw_test = train_test_split(\n    X_wine, y_wine,\n    test_size=0.20,\n    random_state=42,\n    stratify=y_wine\n)\n\nnum_cols = wine.feature_names\n\nprint(\"Wine Eğitim Satır Sayısı:\", len(Xw_train))\nprint(\"Wine Test Satır Sayısı:\", len(Xw_test))\nprint(\"Sayısal Sütun Sayısı:\", len(num_cols))", "output_type": "text", "output": "Wine Eğitim Satır Sayısı: 142\nWine Test Satır Sayısı: 36\nSayısal Sütun Sayısı: 13"}, {"id": "h3-12", "week": "Hafta 3", "week_id": "h3", "slide_no": "39-40", "source_pdf": "HAFTA3.pdf", "title": "Eksik Ölçüleri Medyan ile Doldurma (SimpleImputer)", "category": "Ön İşleme & İmputasyon", "difficulty": "Orta", "summary": "Eksik (NaN) sayısal hücreleri aykırı değerlere dirençli medyan istatistiğiyle doldurur.", "detailed_explanation": ["strategy='median': Sütundaki sayıları küçükten büyüğe dizer ve ortadaki sayıyı eksik yerlere yazar.", "imputer.fit_transform(Xw_train[num_cols]): Eğitim setinin medyanını hesaplar ve boşlukları doldurur.", "imputer.transform(Xw_test[num_cols]): Test setindeki olası boşlukları da eğitimden öğrenilen medyanla doldurur."], "code": "imputer = SimpleImputer(strategy=\"median\")\n\n# Sadece sayısal sütunları dolduruyoruz\nN_train = imputer.fit_transform(Xw_train[num_cols])\nN_test = imputer.transform(Xw_test[num_cols])\n\nprint(\"Doldurma Sonrası Eğitimde Kalan NaN:\", np.isnan(N_train).sum())\nprint(\"Doldurma Sonrası Testte Kalan NaN:\", np.isnan(N_test).sum())", "output_type": "text", "output": "Doldurma Sonrası Eğitimde Kalan NaN: 0\nDoldurma Sonrası Testte Kalan NaN: 0"}, {"id": "h3-13", "week": "Hafta 3", "week_id": "h3", "slide_no": 41, "source_pdf": "HAFTA3.pdf", "title": "Kategorik Değişkeni Kodlama (OneHotEncoder)", "category": "Ön İşleme & Kodlama", "difficulty": "Orta", "summary": "Metinsel 'cihaz' kategorilerini makine öğrenmesi algoritmalarının anlayabileceği ikili (0-1) matrise dönüştürür.", "detailed_explanation": ["sparse_output=False: Sonucun seyrek (sparse) matris yerine okunabilir yoğun (dense) NumPy dizisi dönmesini sağlar.", "handle_unknown='ignore': Test setinde eğitimde hiç görülmemiş yeni bir cihaz çıkarsa hata vermeyip tüm sütunlara 0 yazar.", "get_feature_names_out(): Üretilen yeni sütunların başlıklarını verir (örn: 'cihaz_A', 'cihaz_B', 'cihaz_C')."], "code": "encoder = OneHotEncoder(sparse_output=False, handle_unknown=\"ignore\")\n\n# Cihaz sütununu iki boyutlu olarak veriyoruz\nC_train = encoder.fit_transform(Xw_train[[\"cihaz\"]])\nC_test = encoder.transform(Xw_test[[\"cihaz\"]])\n\nprint(\"Üretilen One-Hot Sütunları:\", encoder.get_feature_names_out([\"cihaz\"]))\nprint(\"\\nİlk 3 Satır Cihaz Matrisi:\")\nprint(C_train[:3])", "output_type": "text", "output": "Üretilen One-Hot Sütunları: ['cihaz_A' 'cihaz_B' 'cihaz_C']\n\nİlk 3 Satır Cihaz Matrisi:\n[[1. 0. 0.]\n [0. 1. 0.]\n [0. 0. 1.]]"}, {"id": "h3-14", "week": "Hafta 3", "week_id": "h3", "slide_no": "43-45", "source_pdf": "HAFTA3.pdf", "title": "ColumnTransformer ve Pipeline ile Uçtan Uca Ön İşleme", "category": "Pipeline Mimarisi", "difficulty": "İleri", "summary": "Sayısal ve kategorik sütunların dönüşüm adımlarını tek bir çatı altında birleştirerek profesyonel pipeline kurar.", "detailed_explanation": ["num_pipe: Sayısal sütunlar için sırasıyla önce SimpleImputer (medyan) ardından StandardScaler çalıştırır.", "cat_pipe: Kategorik sütun için OneHotEncoder çalıştırır.", "ColumnTransformer: Hangi pipeline'ın hangi sütunlara uygulanacağını organize eder.", "fit_transform(Xw_train): Tüm dönüşümü tek hamlede öğrenir ve 16 sütunlu nihai eğitim matrisini üretir (13 sayısal + 3 one-hot)."], "code": "# 1. Sayısal ön işleme zinciri\nnum_pipe = Pipeline([\n    (\"doldur\", SimpleImputer(strategy=\"median\")),\n    (\"olcekle\", StandardScaler())\n])\n\n# 2. Kategorik ön işleme zinciri\ncat_pipe = Pipeline([\n    (\"kodla\", OneHotEncoder(sparse_output=False, handle_unknown=\"ignore\"))\n])\n\n# 3. İki zinciri sütun türlerine göre birleştirme\npreprocessor = ColumnTransformer(transformers=[\n    (\"sayisal\", num_pipe, num_cols),\n    (\"kategorik\", cat_pipe, [\"cihaz\"])\n])\n\n# 4. Eğitimde kuralları öğrenip uygula, teste yalnızca uygula\nhazir_train = preprocessor.fit_transform(Xw_train)\nhazir_test = preprocessor.transform(Xw_test)\n\nprint(\"İşlenmiş Eğitim Matrisi Boyutu:\", hazir_train.shape)\nprint(\"İşlenmiş Test Matrisi Boyutu:\", hazir_test.shape)", "output_type": "text", "output": "İşlenmiş Eğitim Matrisi Boyutu: (142, 16)\nİşlenmiş Test Matrisi Boyutu: (36, 16)\n(13 sayısal özellik + 3 kategorik ikili sütun = 16 sütun)"}, {"id": "h4-01", "week": "Hafta 4", "week_id": "h4", "slide_no": 27, "source_pdf": "Hafta4_Veri_Gorsellestirme_ve_Analiz.pdf", "title": "Görselleştirme Kütüphaneleri ve Grafik Teması Ayarı", "category": "Görselleştirme", "difficulty": "Başlangıç", "summary": "Matplotlib ve Seaborn kütüphanelerini içe aktararak yayın kalitesinde grafik arka plan ve renk paletini yapılandırır.", "detailed_explanation": ["matplotlib.pyplot as plt: Python'ın standart çizim motorunu yükler.", "seaborn as sns: İstatistiksel veriler için yüksek seviyeli modern grafik arayüzünü yükler.", "sns.set_theme(style='whitegrid', palette='deep'): Grafiklere açık gri ızgaralı arka plan ve modern renk paleti atar."], "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nfrom sklearn.datasets import load_iris, load_wine\n\n# Temiz ve profesyonel grafik stili\nsns.set_theme(style=\"whitegrid\", palette=\"deep\")", "output_type": "text", "output": "(Çıktı yok - Grafik stili ve araçları başarıyla yüklendi)"}, {"id": "h4-02", "week": "Hafta 4", "week_id": "h4", "slide_no": 29, "source_pdf": "Hafta4_Veri_Gorsellestirme_ve_Analiz.pdf", "title": "Iris Verisini Görselleştirme İçin Hazırlama (Tür İsimlerini Eşleme)", "category": "Veri Hazırlığı", "difficulty": "Başlangıç", "summary": "Grafik etiketlerinde 0, 1, 2 sayıları yerine 'setosa', 'versicolor', 'virginica' isimlerinin görünmesi için yeni sütun açar.", "detailed_explanation": ["iris.frame.copy(): Iris verisini özellikler ve hedef değişkeni birleşik tek DataFrame olarak alır.", "tur_haritasi = dict(enumerate(iris.target_names)): {0: 'setosa', 1: 'versicolor', 2: 'virginica'} sözlüğünü üretir.", "map(tur_haritasi): Sayısal hedef kodlarını tür metinlerine dönüştürür."], "code": "iris = load_iris(as_frame=True)\ndf_iris = iris.frame.copy()\n\n# 0, 1, 2 sayılarını tür adlarıyla eşliyoruz\ntur_haritasi = dict(enumerate(iris.target_names))\ndf_iris[\"tur\"] = df_iris[\"target\"].map(tur_haritasi)\n\nprint(\"Görselleştirmeye Hazır Iris:\")\nprint(df_iris.head(3))", "output_type": "table", "output": "Görselleştirmeye Hazır Iris:\n   sepal length (cm)  sepal width (cm)  petal length (cm)  petal width (cm)  target     tur\n0                5.1               3.5                1.4               0.2       0  setosa\n1                4.9               3.0                1.4               0.2       0  setosa\n2                4.7               3.2                1.3               0.2       0  setosa"}, {"id": "h4-03", "week": "Hafta 4", "week_id": "h4", "slide_no": 31, "source_pdf": "Hafta4_Veri_Gorsellestirme_ve_Analiz.pdf", "title": "Tür Sayılarını Sütun Grafiğiyle Gösterme (Bar Plot)", "category": "Görselleştirme", "difficulty": "Başlangıç", "summary": "Her çiçek türündeki örnek sayısını dikey çubuk grafikle çizerek sınıf dengesini inceler.", "detailed_explanation": ["df_iris['tur'].value_counts(): Her sınıfta 50 adet çiçek olduğunu hesaplar.", "fig, ax = plt.subplots(figsize=(6, 4)): Çizim alanı (fig) ve koordinat eksenlerini (ax) oluşturur.", "ax.bar(counts.index, counts.values): Çubukları ve renklerini çizer."], "code": "fig, ax = plt.subplots(figsize=(6, 4))\ncounts = df_iris[\"tur\"].value_counts()\n\nax.bar(counts.index, counts.values, color=[\"#4C72B0\", \"#55A868\", \"#C44E52\"])\nax.set_title(\"Iris Tür Sayıları (Sınıf Dağılımı)\")\nax.set_xlabel(\"Tür\")\nax.set_ylabel(\"Kayıt Sayısı\")\n\nplt.tight_layout()\nplt.show()", "output_type": "chart", "output": "[GRAFİK ÇIKTISI]\nX Ekseni: setosa, versicolor, virginica\nY Ekseni: 0 - 50 Kayıt Sayısı\nHer tür 50 birim yüksekliğinde dengeli 3 sütun olarak görselleşir."}, {"id": "h4-04", "week": "Hafta 4", "week_id": "h4", "slide_no": 33, "source_pdf": "Hafta4_Veri_Gorsellestirme_ve_Analiz.pdf", "title": "Çanak Yaprak Uzunluğu Histogramı (Histogram)", "category": "Görselleştirme", "difficulty": "Başlangıç", "summary": "Tek bir sayısal özelliğin (çanak uzunluğu) ölçüm frekansını 10 aralığa bölerek dağılımını gösterir.", "detailed_explanation": ["ax.hist(): Sayısal değerleri belirli aralıklara (bins) toplayıp sütunlar halinde frekans grafiği çizer.", "bins=10: En küçük (4.3 cm) ile en büyük (7.9 cm) değer arasındaki mesafeyi 10 eşit kutuya böler.", "edgecolor='black': Sütun kenarlıklarını belirginleştirir."], "code": "fig, ax = plt.subplots(figsize=(6, 4))\n\nax.hist(df_iris[\"sepal length (cm)\"], bins=10, edgecolor=\"black\", color=\"#4C72B0\")\nax.set_title(\"Çanak Yaprak Uzunluğu Histogramı (bins=10)\")\nax.set_xlabel(\"Uzunluk (cm)\")\nax.set_ylabel(\"Frekans (Gözlem Sayısı)\")\n\nplt.tight_layout()\nplt.show()", "output_type": "chart", "output": "[GRAFİK ÇIKTISI]\nÇanak yaprak uzunluğunun 5.0 - 6.5 cm aralığında en yüksek yoğunluğa ulaştığı (tepe noktası), 7 cm üzerinde ise az sayıda örnek bulunduğu görülür."}, {"id": "h4-05", "week": "Hafta 4", "week_id": "h4", "slide_no": 35, "source_pdf": "Hafta4_Veri_Gorsellestirme_ve_Analiz.pdf", "title": "Türlere Göre Kutu Grafiği (Boxplot)", "category": "Görselleştirme", "difficulty": "Orta", "summary": "Taç yaprak uzunluğunun türlere göre medyanını, çeyrekler arası açıklığını (IQR) ve ayrışmasını görselleştirir.", "detailed_explanation": ["sns.boxplot(): Verinin minimum, Q1 (%25), medyan (%50), Q3 (%75) ve maksimum değerlerini kutu ve bıyıklarla gösterir.", "Kutu genişliği (IQR = Q3 - Q1): Değerlerin orta %50'lik kısmının ne kadar yayıldığını gösterir.", "Grafik analizi: Setosa türünün taç yaprak uzunluğunun (1-2 cm) diğer iki türden tamamen kopuk ve net şekilde ayrıştığını kanıtlar."], "code": "fig, ax = plt.subplots(figsize=(6, 4))\n\nsns.boxplot(data=df_iris, x=\"tur\", y=\"petal length (cm)\", ax=ax)\nax.set_title(\"Türlere Göre Taç Yaprak Uzunluğu Karşılaştırması\")\nax.set_xlabel(\"Çiçek Türü\")\nax.set_ylabel(\"Taç Yaprak Uzunluğu (cm)\")\n\nplt.tight_layout()\nplt.show()", "output_type": "chart", "output": "[GRAFİK ÇIKTISI]\nSetosa: ~1.4 cm civarında çok dar bir aralıkta toplanır (tamamen ayrık).\nVersicolor: ~4.0 - 4.6 cm aralığında kutu oluşturur.\nVirginica: ~5.0 - 6.0 cm aralığında daha yüksek değerler alır."}, {"id": "h4-06", "week": "Hafta 4", "week_id": "h4", "slide_no": 37, "source_pdf": "Hafta4_Veri_Gorsellestirme_ve_Analiz.pdf", "title": "İki Özellik Arasındaki Dağılım Grafiği (Scatter Plot)", "category": "Görselleştirme", "difficulty": "Orta", "summary": "Çanak uzunluğu ile taç uzunluğunu iki boyutlu kartezyen düzlemde çiçek türlerine göre renklendirerek gösterir.", "detailed_explanation": ["sns.scatterplot(): İki sayısal sütunu X ve Y eksenlerine yerleştirip her çiçeği bir nokta olarak basar.", "hue='tur': Noktaları türlerine göre farklı renklerle renklendirir.", "style='tur': Nokta simgelerini (daire, kare, çarpı) türe göre değiştirir.", "s=60: Noktaların boyutunu okunaklı olması için ayarlar."], "code": "fig, ax = plt.subplots(figsize=(7, 5))\n\nsns.scatterplot(\n    data=df_iris,\n    x=\"sepal length (cm)\",\n    y=\"petal length (cm)\",\n    hue=\"tur\",\n    style=\"tur\",\n    s=60,\n    ax=ax\n)\nax.set_title(\"Çanak Uzunluğu ile Taç Uzunluğu İlişkisi\")\nax.set_xlabel(\"Çanak Uzunluğu (cm)\")\nax.set_ylabel(\"Taç Uzunluğu (cm)\")\n\nplt.tight_layout()\nplt.show()", "output_type": "chart", "output": "[GRAFİK ÇIKTISI]\nSol altta mavi Setosa kümesi net şekilde izoledir.\nSağ üstte yeşil Versicolor ve kırmızı Virginica birbirine yakın ancak ayrıştırılabilir bir hat izler."}, {"id": "h4-07", "week": "Hafta 4", "week_id": "h4", "slide_no": 39, "source_pdf": "Hafta4_Veri_Gorsellestirme_ve_Analiz.pdf", "title": "Grup Ortalamalarını Karşılaştırma (groupby & mean)", "category": "Veri Analizi", "difficulty": "Başlangıç", "summary": "Her çiçek türü için 4 ölçümün aritmetik ortalamalarını hesaplayarak türlerin fiziksel profilini çıkarır.", "detailed_explanation": ["groupby('tur'): Tabloyu tür sütununa göre 3 alt gruba böler.", "[ozellikler].mean(): 4 sayısal sütunun ortalamalarını her grup için hesaplar.", "round(2): Virgülden sonra iki basamağa yuvarlar."], "code": "ozellikler = df_iris.columns[:4]\ngrup_ozeti = df_iris.groupby(\"tur\")[ozellikler].mean().round(2)\n\nprint(\"Türlere Göre Ortalama Ölçümler:\")\nprint(grup_ozeti)", "output_type": "table", "output": "Türlere Göre Ortalama Ölçümler:\n            sepal length (cm)  sepal width (cm)  petal length (cm)  petal width (cm)\ntur                                                                                 \nsetosa                   5.01              3.43               1.46              0.25\nversicolor               5.94              2.77               4.26              1.33\nvirginica                6.59              2.97               5.55              2.03"}, {"id": "h4-08", "week": "Hafta 4", "week_id": "h4", "slide_no": 41, "source_pdf": "Hafta4_Veri_Gorsellestirme_ve_Analiz.pdf", "title": "Iris Korelasyon Isı Haritası (Heatmap)", "category": "Görselleştirme", "difficulty": "Orta", "summary": "Tüm özelliklerin ikili Pearson korelasyon katsayılarını renk kodlu matris üzerinde sunar.", "detailed_explanation": ["corr(): -1 ile +1 arasında değişen doğrusal ilişki katsayılarını matris olarak hesaplar.", "sns.heatmap(): Matrisi renkli haritaya dönüştürür.", "annot=True: Hücrelerin içine sayısal korelasyon değerlerini yazar.", "cmap='coolwarm': Pozitif ilişkileri kırmızı, negatif ilişkileri mavi renkle kodlar.", "Önemli bulgu: Taç uzunluğu ile taç genişliği arasındaki 0.96 değeri çok kuvvetli pozitif ilişkiyi gösterir."], "code": "fig, ax = plt.subplots(figsize=(6, 5))\n\ncorr_matrix = df_iris[ozellikler].corr()\nsns.heatmap(corr_matrix, annot=True, cmap=\"coolwarm\", fmt=\".2f\", ax=ax, vmin=-1, vmax=1)\nax.set_title(\"Iris Özellikleri Arasındaki Korelasyon Matrisi\")\n\nplt.tight_layout()\nplt.show()", "output_type": "chart", "output": "[GRAFİK ÇIKTISI]\npetal length ile petal width: 0.96 (Çok Yüksek Pozitif İlişki)\nsepal length ile petal length: 0.87 (Yüksek Pozitif İlişki)\nsepal width ile petal length: -0.43 (Negatif İlişki)"}, {"id": "h4-09", "week": "Hafta 4", "week_id": "h4", "slide_no": 43, "source_pdf": "Hafta4_Veri_Gorsellestirme_ve_Analiz.pdf", "title": "Wine Veri Setini Analize Hazırlama", "category": "Veri Hazırlığı", "difficulty": "Başlangıç", "summary": "178 şarap numunesini grup etiketleriyle birleştirerek görselleştirme DataFrame'i oluşturur.", "detailed_explanation": ["df_wine['grup']: Hedef sınıf kodlarını (0, 1, 2) 'class_0', 'class_1', 'class_2' metinlerine dönüştürür."], "code": "wine = load_wine(as_frame=True)\ndf_wine = wine.frame.copy()\ndf_wine[\"grup\"] = df_wine[\"target\"].map(dict(enumerate(wine.target_names)))\n\nprint(\"Analize Hazır Wine Veri Seti:\")\nprint(df_wine[[\"alcohol\", \"malic_acid\", \"flavanoids\", \"proline\", \"grup\"]].head(3))", "output_type": "table", "output": "Analize Hazır Wine Veri Seti:\n   alcohol  malic_acid  flavanoids  proline     grup\n0    14.23        1.71        3.06   1065.0  class_0\n1    13.20        1.78        2.76   1050.0  class_0\n2    13.16        2.36        3.24   1185.0  class_0"}, {"id": "h4-10", "week": "Hafta 4", "week_id": "h4", "slide_no": 46, "source_pdf": "Hafta4_Veri_Gorsellestirme_ve_Analiz.pdf", "title": "Wine Alkol Dağılımı Histogramı", "category": "Görselleştirme", "difficulty": "Başlangıç", "summary": "Şarapların alkol yüzdesi dağılımını 12 aralıkla inceler.", "detailed_explanation": ["bins=12: Alkol oranlarını 11.0 ile 15.0 derece aralığında 12 kutuya böler."], "code": "fig, ax = plt.subplots(figsize=(6, 4))\n\nax.hist(df_wine[\"alcohol\"], bins=12, edgecolor=\"black\", color=\"#55A868\")\nax.set_title(\"Wine Veri Seti: Alkol Dağılımı (bins=12)\")\nax.set_xlabel(\"Alkol Oranı (%)\")\nax.set_ylabel(\"Şarap Sayısı\")\n\nplt.tight_layout()\nplt.show()", "output_type": "chart", "output": "[GRAFİK ÇIKTISI]\nAlkol oranının yaklaşık 12.2% ve 13.5% civarında iki ayrı tepe noktası (bimodal dağılım) sergilediği görülür."}, {"id": "h4-11", "week": "Hafta 4", "week_id": "h4", "slide_no": 48, "source_pdf": "Hafta4_Veri_Gorsellestirme_ve_Analiz.pdf", "title": "Wine Alkol ve Prolin İlişkisi Dağılım Grafiği", "category": "Görselleştirme", "difficulty": "Orta", "summary": "Şarapların alkol ve prolin aminoasit miktarına göre nasıl kümelendiğini gösterir.", "detailed_explanation": ["Alkol ve prolin ikilisi class_0 şaraplarını (yüksek prolin ve yüksek alkol) diğer sınıflardan çok net bir şekilde ayırır."], "code": "fig, ax = plt.subplots(figsize=(7, 5))\n\nsns.scatterplot(\n    data=df_wine,\n    x=\"alcohol\",\n    y=\"proline\",\n    hue=\"grup\",\n    style=\"grup\",\n    s=60,\n    ax=ax\n)\nax.set_title(\"Alkol ile Prolin Arasındaki İlişki\")\nax.set_xlabel(\"Alkol Oranı\")\nax.set_ylabel(\"Prolin Miktarı\")\n\nplt.tight_layout()\nplt.show()", "output_type": "chart", "output": "[GRAFİK ÇIKTISI]\nclass_0: Sağ üstte (Yüksek alkol > 13.5 ve Yüksek prolin > 900)\nclass_1: Sol altta (Düşük alkol < 13.0 ve Düşük prolin < 600)\nclass_2: Orta alt bölgede toplanır."}, {"id": "h4-12", "week": "Hafta 4", "week_id": "h4", "slide_no": 50, "source_pdf": "Hafta4_Veri_Gorsellestirme_ve_Analiz.pdf", "title": "Wine Gruplarında Flavanoids Kutu Grafiği", "category": "Görselleştirme", "difficulty": "Orta", "summary": "Antioksidan flavanoid seviyesinin 3 şarap türü arasındaki çarpıcı farkını gösterir.", "detailed_explanation": ["class_2 türündeki şarapların flavanoids değerlerinin 1.0'ın altında kaldığı, class_0'da ise 3.0 civarına çıktığı görülür."], "code": "fig, ax = plt.subplots(figsize=(6, 4))\n\nsns.boxplot(data=df_wine, x=\"grup\", y=\"flavanoids\", ax=ax)\nax.set_title(\"Şarap Gruplarına Göre Flavanoids Miktarı\")\nax.set_xlabel(\"Grup\")\nax.set_ylabel(\"Flavanoids Seviyesi\")\n\nplt.tight_layout()\nplt.show()", "output_type": "chart", "output": "[GRAFİK ÇIKTISI]\nclass_0: Yüksek seviye (~3.0)\nclass_1: Orta seviye (~2.0)\nclass_2: Çok düşük seviye (~0.7) - Neredeyse hiç örtüşme yoktur."}, {"id": "h4-13", "week": "Hafta 4", "week_id": "h4", "slide_no": 54, "source_pdf": "Hafta4_Veri_Gorsellestirme_ve_Analiz.pdf", "title": "Grafik ve Analiz Sonuçlarının Dosyaya Kaydedilmesi", "category": "Dosya İşlemleri", "difficulty": "Başlangıç", "summary": "Oluşturulan Matplotlib grafik figürünü yüksek çözünürlüklü resim olarak, analiz özetini ise CSV tablosu olarak diske yazar.", "detailed_explanation": ["fig.savefig('iris_analiz.png', dpi=150, bbox_inches='tight'): Grafik kenarındaki boşlukları kırparak net bir PNG dosyası kaydeder.", "grup_ozeti.to_csv('iris_ozet.csv'): Pandas özet tablosunu Excel uyumlu CSV olarak dışa aktarır."], "code": "# Grafiği PNG olarak kaydetme\nfig.savefig(\"iris_analiz.png\", dpi=150, bbox_inches=\"tight\")\n\n# Özet tabloyu CSV olarak kaydetme\ngrup_ozeti.to_csv(\"iris_ozet_tablo.csv\")\n\nprint(\"iris_analiz.png ve iris_ozet_tablo.csv başarıyla kaydedildi.\")", "output_type": "text", "output": "iris_analiz.png ve iris_ozet_tablo.csv başarıyla kaydedildi."}, {"id": "h5-01", "week": "Hafta 5", "week_id": "h5", "slide_no": 22, "source_pdf": "Hafta5_Makine_Ogrenmesi_Temelleri.pdf", "title": "Pipeline ile Ön İşleme ve Modeli Bir Arada Tutma", "category": "Pipeline Mimarisi", "difficulty": "Orta", "summary": "StandardScaler ölçekleyicisi ile KNeighborsClassifier sınıflandırıcısını tek bir akış zincirine bağlar.", "detailed_explanation": ["make_pipeline: Scikit-learn nesnelerini isim vermeye gerek kalmadan otomatik sıraya bağlayan pratik yardımcıdır.", "KNN algoritması Öklid mesafesi hesapladığı için özellikleri ölçeklemek zorunludur; pipeline bu ölçeklemenin test setine otomatik uygulanmasını sağlar."], "code": "from sklearn.pipeline import make_pipeline\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.neighbors import KNeighborsClassifier\n\n# Ölçekleyici ve KNN sınıflandırıcıyı birbirine bağlama\nknn_pipe = make_pipeline(\n    StandardScaler(),\n    KNeighborsClassifier(n_neighbors=5)\n)\n\nprint(\"Kurulan Pipeline:\")\nprint(knn_pipe)", "output_type": "text", "output": "Kurulan Pipeline:\nPipeline(steps=[('standardscaler', StandardScaler()),\n                ('kneighborsclassifier', KNeighborsClassifier(n_neighbors=5))])"}, {"id": "h5-02", "week": "Hafta 5", "week_id": "h5", "slide_no": 37, "source_pdf": "Hafta5_Makine_Ogrenmesi_Temelleri.pdf", "title": "Model Doğrulama Kütüphanelerinin Yüklenmesi", "category": "Kütüphaneler", "difficulty": "Başlangıç", "summary": "Makine öğrenmesi model eğitimi, çapraz doğrulama, metrikler ve model klonlama araçlarını projeye ekler.", "detailed_explanation": ["StratifiedKFold: Katmanlı K-katlı çapraz doğrulama böleci.", "cross_validate: Modeli katlar üzerinde eğitip F1 puanlarını toplayan fonksiyon.", "accuracy_score & f1_score: Modelin genel başarısını ve dengeli sınıf başarımını ölçen metrikler.", "classification_report: Sınıf başına precision, recall, f1-score ve support veren detaylı tablo.", "confusion_matrix: Karışıklık matrisi.", "clone: Eğitilmiş modeli aynı hiperparametrelerle sıfırdan oluşturmak için kullanılan Scikit-learn kopyalayıcısı."], "code": "import numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\n\nfrom sklearn.datasets import load_iris, load_wine\nfrom sklearn.model_selection import train_test_split, StratifiedKFold, cross_validate\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import make_pipeline\nfrom sklearn.neighbors import KNeighborsClassifier\nfrom sklearn.metrics import accuracy_score, f1_score, classification_report, confusion_matrix\nfrom sklearn.base import clone", "output_type": "text", "output": "(Çıktı yok - Model doğrulama araçları başarıyla yüklendi)"}, {"id": "h5-03", "week": "Hafta 5", "week_id": "h5", "slide_no": 39, "source_pdf": "Hafta5_Makine_Ogrenmesi_Temelleri.pdf", "title": "Iris: Bağımsız Son Test Kümesini Ayırma", "category": "Model Hazırlığı", "difficulty": "Orta", "summary": "Verinin %20'sini model geliştirme sürecinden tamamen ayrı tutmak üzere son test kümesi olarak kilitler.", "detailed_explanation": ["Altın kural: Hiperparametre seçimi (K belirleme) ASLA son test verisi üzerinde yapılmaz. Test verisi model seçildikten sonra sadece tek bir kez açılır!"], "code": "iris = load_iris(as_frame=True)\nX_i, y_i = iris.data.copy(), iris.target.copy()\n\nX_i_train, X_i_test, y_i_train, y_i_test = train_test_split(\n    X_i, y_i,\n    test_size=0.20,\n    stratify=y_i,\n    random_state=42\n)\n\nprint(\"Model Geliştirme (Eğitim) Verisi:\", X_i_train.shape)\nprint(\"Kilitli Son Test Verisi:\", X_i_test.shape)", "output_type": "text", "output": "Model Geliştirme (Eğitim) Verisi: (120, 4)\nKilitli Son Test Verisi: (30, 4)"}, {"id": "h5-04", "week": "Hafta 5", "week_id": "h5", "slide_no": 40, "source_pdf": "Hafta5_Makine_Ogrenmesi_Temelleri.pdf", "title": "Farklı K Değerleri İçin Ortak Model Sözlüğü (make_models)", "category": "Model Mimarisi", "difficulty": "Orta", "summary": "K=1, 3, 5 ve 7 komşuluk sayılarına sahip 4 farklı KNN pipeline nesnesini bir fonksiyon içinde döndürür.", "detailed_explanation": ["Fonksiyon kullanımı: Her çağrıldığında temiz ve eğitilmemiş yeni nesneler üretilmesini garanti eder."], "code": "def make_models():\n    return {\n        \"KNN-1\": make_pipeline(StandardScaler(), KNeighborsClassifier(n_neighbors=1)),\n        \"KNN-3\": make_pipeline(StandardScaler(), KNeighborsClassifier(n_neighbors=3)),\n        \"KNN-5\": make_pipeline(StandardScaler(), KNeighborsClassifier(n_neighbors=5)),\n        \"KNN-7\": make_pipeline(StandardScaler(), KNeighborsClassifier(n_neighbors=7))\n    }\n\nmodeller = make_models()\nprint(\"Karşılaştırılacak Modeller:\", list(modeller.keys()))", "output_type": "text", "output": "Karşılaştırılacak Modeller: ['KNN-1', 'KNN-3', 'KNN-5', 'KNN-7']"}, {"id": "h5-05", "week": "Hafta 5", "week_id": "h5", "slide_no": "41-42", "source_pdf": "Hafta5_Makine_Ogrenmesi_Temelleri.pdf", "title": "5 Katlı Çapraz Doğrulama (evaluate_models) ve K Seçimi", "category": "Model Değerlendirme", "difficulty": "İleri", "summary": "Eğitim verisini 5 kata bölerek her modeli test eder ve en yüksek ortalama Macro F1 puanına sahip modeli belirler.", "detailed_explanation": ["StratifiedKFold(n_splits=5): 120 eğitim örneğini 24'er örnekten oluşan 5 parçaya böler. Sırayla 4 parça eğitim, 1 parça doğrulama için kullanılır.", "scoring='f1_macro': Her sınıfın F1 puanının aritmetik ortalamasını alır; sınıfların eşit ağırlıkta değerlendirilmesini sağlar.", "idxmax(): En yüksek cv_f1 puanını alan model satırını bulur."], "code": "cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)\n\ndef evaluate_models(models, X, y):\n    rows = []\n    for name, model in models.items():\n        res = cross_validate(model, X, y, cv=cv, scoring=\"f1_macro\")\n        rows.append({\n            \"model\": name,\n            \"cv_f1\": res[\"test_score\"].mean(),\n            \"std\": res[\"test_score\"].std()\n        })\n    return pd.DataFrame(rows).sort_values(\"cv_f1\", ascending=False)\n\niris_cv = evaluate_models(make_models(), X_i_train, y_i_train)\n\nprint(\"Iris Çapraz Doğrulama Sıralaması:\")\nprint(iris_cv.round(3).to_string(index=False))", "output_type": "table", "output": "Iris Çapraz Doğrulama Sıralaması:\n model  cv_f1    std\n KNN-3  0.958  0.038\n KNN-5  0.950  0.031\n KNN-7  0.942  0.035\n KNN-1  0.933  0.042\n\n(KNN-3 en yüksek puanla seçildi)"}, {"id": "h5-06", "week": "Hafta 5", "week_id": "h5", "slide_no": "44-45", "source_pdf": "Hafta5_Makine_Ogrenmesi_Temelleri.pdf", "title": "Seçilen Modelin Nihai Eğitimi ve Bağımsız Son Test Raporu", "category": "Model Testi", "difficulty": "İleri", "summary": "Doğrulamada birinci olan KNN-3 modelini 120 verinin tamamıyla eğitir ve 30 test örneği üzerinde nihai karnesini çıkarır.", "detailed_explanation": ["clone(modeller[best_name]): Seçilen model mimarisini sıfırdan klonlar.", "fit(X_i_train, y_i_train): 120 örneğin tümünü kullanarak nihai eğitimi tamamlar.", "predict(X_i_test): Kilitli tutulan 30 test örneği için tür tahminleri üretir.", "classification_report: Sınıf başına precision (kesinlik), recall (duyarlılık) ve F1 puanlarını döker."], "code": "# 1. En iyi modeli seç ve sıfırdan klonla\nbest_name = iris_cv.iloc[0][\"model\"]\nbest_model_i = clone(make_models()[best_name])\n\n# 2. Tüm eğitim setiyle son eğitimi yap\nbest_model_i.fit(X_i_train, y_i_train)\n\n# 3. Bağımsız test setinde tahmin al\npred_i = best_model_i.predict(X_i_test)\n\nprint(f\"Seçilen Model: {best_name}\")\nprint(\"Test Doğruluğu (Accuracy):\", round(accuracy_score(y_i_test, pred_i), 3))\nprint(\"Test Macro F1:\", round(f1_score(y_i_test, pred_i, average=\"macro\"), 3))\nprint(\"\\nDetaylı Sınıflandırma Raporu:\")\nprint(classification_report(y_i_test, pred_i, target_names=iris.target_names, zero_division=0))", "output_type": "text", "output": "Seçilen Model: KNN-3\nTest Doğruluğu (Accuracy): 0.967\nTest Macro F1: 0.967\n\nDetaylı Sınıflandırma Raporu:\n              precision    recall  f1-score   support\n\n      setosa       1.00      1.00      1.00        10\n  versicolor       0.91      1.00      0.95        10\n   virginica       1.00      0.90      0.95        10\n\n    accuracy                           0.97        30\n   macro avg       0.97      0.97      0.97        30\nweighted avg       0.97      0.97      0.97        30"}, {"id": "h5-07", "week": "Hafta 5", "week_id": "h5", "slide_no": 46, "source_pdf": "Hafta5_Makine_Ogrenmesi_Temelleri.pdf", "title": "Iris Karışıklık Matrisi Grafiği (Confusion Matrix)", "category": "Görselleştirme & Metrik", "difficulty": "Orta", "summary": "Modelin doğru ve yanlış bildiği test örneklerini sınıflar matrisi şeklinde ısı haritasıyla gösterir.", "detailed_explanation": ["Satırlar: Gerçek sınıf etiketlerini temsil eder.", "Sütunlar: Modelin tahmin ettiği sınıf etiketlerini temsil eder.", "Köşegen (Diagonal): Doğru tahmin sayılarıdır (10 Setosa, 10 Versicolor, 9 Virginica doğru).", "Köşegen dışı: Hatalı tahmindir (Sadece 1 Virginica çiçeği Versicolor olarak yanlış tahmin edilmiştir)."], "code": "cm_i = confusion_matrix(y_i_test, pred_i)\n\nfig, ax = plt.subplots(figsize=(5, 4))\nsns.heatmap(\n    cm_i, annot=True, cmap=\"Blues\", fmt=\"d\",\n    xticklabels=iris.target_names,\n    yticklabels=iris.target_names,\n    ax=ax\n)\nax.set_title(\"Iris Test Karışıklık Matrisi (Confusion Matrix)\")\nax.set_xlabel(\"Tahmin Edilen Tür\")\nax.set_ylabel(\"Gerçek Tür\")\n\nplt.tight_layout()\nplt.show()", "output_type": "chart", "output": "[GRAFİK ÇIKTISI]\n[[10,  0,  0],   <- Setosa: 10/10 Tam İsabet\n [ 0, 10,  0],   <- Versicolor: 10/10 Tam İsabet\n [ 0,  1,  9]]   <- Virginica: 9 Doğru, 1 Versicolor Karışımı"}, {"id": "h5-08", "week": "Hafta 5", "week_id": "h5", "slide_no": 48, "source_pdf": "Hafta5_Makine_Ogrenmesi_Temelleri.pdf", "title": "Yeni Bir Çiçek Ölçümü İçin Tekil Tahmin Üretme", "category": "Model Çıkarımı (Inference)", "difficulty": "Başlangıç", "summary": "Laboratuvardan yeni gelen bir çiçeğin 4 ölçümünü modele besleyerek türünü ve olasılıklarını hesaplar.", "detailed_explanation": ["predict(): En yüksek olasılığa sahip sınıf kodunu (0, 1 veya 2) döndürür.", "predict_proba(): Modelin her sınıfa verdiği güven yüzdesini (olasılık dağılımını) verir."], "code": "# Yeni ölçülen bir çiçek (sepal_l, sepal_w, petal_l, petal_w)\nyeni_olcum = pd.DataFrame([[5.1, 3.5, 1.4, 0.2]], columns=X_i.columns)\n\n# Modelden tahmin ve olasılık alma\ntahmin_kod = best_model_i.predict(yeni_olcum)[0]\ntahmin_olasilik = best_model_i.predict_proba(yeni_olcum)[0]\n\nprint(\"Yeni Çiçek Ölçümleri:\\n\", yeni_olcum)\nprint(\"\\nTahmin Edilen Çiçek Türü:\", iris.target_names[tahmin_kod])\nprint(\"Sınıf Olasılıkları (Setosa, Versicolor, Virginica):\", tahmin_olasilik)", "output_type": "text", "output": "Yeni Çiçek Ölçümleri:\n    sepal length (cm)  sepal width (cm)  petal length (cm)  petal width (cm)\n0                5.1               3.5                1.4               0.2\n\nTahmin Edilen Çiçek Türü: setosa\nSınıf Olasılıkları (Setosa, Versicolor, Virginica): [1.  0.  0.]"}, {"id": "h5-09", "week": "Hafta 5", "week_id": "h5", "slide_no": "50-54", "source_pdf": "Hafta5_Makine_Ogrenmesi_Temelleri.pdf", "title": "Aynı İş Akışının Wine Veri Setine Uygulanması", "category": "Uygulama & Doğrulama", "difficulty": "İleri", "summary": "13 özellikli Wine veri setinde K değerlerini çapraz doğrulama ile karşılaştırıp nihai testi tamamlar.", "detailed_explanation": ["Wine veri setinde KNN-7 modeli en yüksek CV skorunu (0.972) elde ederek birinci seçilir.", "Test kümesinde 36 şarabın 35'i tam doğru bilinir (Doğruluk: %97.2)."], "code": "wine = load_wine(as_frame=True)\nX_w, y_w = wine.data.copy(), wine.target.copy()\n\nX_w_train, X_w_test, y_w_train, y_w_test = train_test_split(\n    X_w, y_w, test_size=0.20, stratify=y_w, random_state=42\n)\n\nwine_cv = evaluate_models(make_models(), X_w_train, y_w_train)\nprint(\"Wine Çapraz Doğrulama Tablosu:\")\nprint(wine_cv.round(3).to_string(index=False))\n\nbest_w_name = wine_cv.iloc[0][\"model\"]\nbest_model_w = clone(make_models()[best_w_name])\nbest_model_w.fit(X_w_train, y_w_train)\n\npred_w = best_model_w.predict(X_w_test)\nprint(f\"\\nSeçilen Model: {best_w_name} | Test Doğruluğu: {round(accuracy_score(y_w_test, pred_w), 3)}\")", "output_type": "text", "output": "Wine Çapraz Doğrulama Tablosu:\n model  cv_f1    std\n KNN-7  0.972  0.025\n KNN-5  0.965  0.030\n KNN-3  0.958  0.033\n KNN-1  0.951  0.035\n\nSeçilen Model: KNN-7 | Test Doğruluğu: 0.972"}, {"id": "h6-01", "week": "Hafta 6", "week_id": "h6", "slide_no": 16, "source_pdf": "hafta6.pdf", "title": "Algoritma 1: K-En Yakın Komşu (KNN)", "category": "Algoritmalar", "difficulty": "Orta", "summary": "Öklid mesafesi hesaplayarak yeni bir örneği en yakın K adet komşusunun çoğunluk oyuna göre sınıflandırır.", "detailed_explanation": ["StandardScaler: KNN mesafe hesabı yaptığı için özelliklerin büyüklük farklarından etkilenmemesi adına ölçekleme ŞARTTIR.", "n_neighbors=5: Çevredeki en yakın 5 komşunun etiketine bakar.", "Güçlü yönü: Basit, parametresiz, doğrusal olmayan karmaşık karar sınırlarını öğrenebilir.", "Zayıf yönü: Büyük veri setlerinde tahmin aşaması yavaştır."], "code": "from sklearn.pipeline import make_pipeline\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.neighbors import KNeighborsClassifier\n\nmodel_knn = make_pipeline(\n    StandardScaler(),\n    KNeighborsClassifier(n_neighbors=5)\n)", "output_type": "text", "output": "(KNN Pipeline Modeli Hazır: Ölçekleme + 5 Komşu Oylaması)"}, {"id": "h6-02", "week": "Hafta 6", "week_id": "h6", "slide_no": 20, "source_pdf": "hafta6.pdf", "title": "Algoritma 2: Lojistik Regresyon (Logistic Regression)", "category": "Algoritmalar", "difficulty": "Orta", "summary": "Doğrusal kombinasyonu Sigmoid/Softmax fonksiyonundan geçirerek sınıflara ait olasılık değerleri üretir.", "detailed_explanation": ["C=1.0: Düzenlileştirme (Regularization) ters katsayısıdır. Küçük C modeli sadeleştirir ve aşırı öğrenmeyi önler.", "max_iter=1000: Gradyan inişi optimizasyonunun yakınsaması için izin verilen maksimum iterasyon sayısı.", "StandardScaler: Gradyan optimizasyonunun hızlı ve kararlı yakınsaması için ölçekleme gereklidir."], "code": "from sklearn.pipeline import make_pipeline\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.linear_model import LogisticRegression\n\nmodel_lojistik = make_pipeline(\n    StandardScaler(),\n    LogisticRegression(C=1.0, max_iter=1000)\n)", "output_type": "text", "output": "(Lojistik Regresyon Modeli Hazır: Ölçekleme + C=1.0)"}, {"id": "h6-03", "week": "Hafta 6", "week_id": "h6", "slide_no": 25, "source_pdf": "hafta6.pdf", "title": "Algoritma 3: Karar Ağacı (Decision Tree)", "category": "Algoritmalar", "difficulty": "Başlangıç", "summary": "Özellikleri 'eğer-ise' (if-else) kurallarıyla dallandırarak şeffaf ve yorumlanabilir kararlar üretir.", "detailed_explanation": ["max_depth=3: Ağacın maksimum derinliğini 3 ile sınırlar (Aşırı öğrenmeyi / Overfitting'i engeller).", "random_state=42: Eşit bilgi kazancına sahip dallanmalarda seçim tutarlılığı sağlar.", "Büyük avantajı: Ölçeklemeye İHTİYAÇ DUYMAZ; sayıların mutlak büyüklüğü değil sıralaması önemlidir."], "code": "from sklearn.tree import DecisionTreeClassifier\n\n# Ölçekleme gerekmez!\nmodel_agac = DecisionTreeClassifier(max_depth=3, random_state=42)", "output_type": "text", "output": "(Karar Ağacı Modeli Hazır: Derinlik=3, Ölçekleme Yok)"}, {"id": "h6-04", "week": "Hafta 6", "week_id": "h6", "slide_no": 29, "source_pdf": "hafta6.pdf", "title": "Algoritma 4: Rastgele Orman (Random Forest)", "category": "Algoritmalar", "difficulty": "İleri", "summary": "100 farklı karar ağacını rastgele veri ve özellik alt kümelerinde eğitip çoğunluk oylamasıyla birleştiren topluluk (Ensemble) yöntemi.", "detailed_explanation": ["n_estimators=100: Ormanda 100 bağımsız karar ağacı kurulacağını belirtir.", "max_depth=5: Ağaçların aşırı derinleşip ezber yapmasını sınırlar.", "max_features='sqrt': Her dallanmada rastgele seçilecek özellik adedini toplam sütun sayısının karekökü (sqrt) ile sınırlar.", "Ölçekleme gerektirmez, tek bir karar ağacına göre varyansı çok daha düşüktür."], "code": "from sklearn.ensemble import RandomForestClassifier\n\n# 100 ağaçlı topluluk modeli\nmodel_orman = RandomForestClassifier(\n    n_estimators=100,\n    max_depth=5,\n    max_features=\"sqrt\",\n    random_state=42\n)", "output_type": "text", "output": "(Rastgele Orman Modeli Hazır: 100 Ağaç, sqrt özellik seçimi)"}, {"id": "h6-05", "week": "Hafta 6", "week_id": "h6", "slide_no": 33, "source_pdf": "hafta6.pdf", "title": "Algoritma 5: Destek Vektör Makinesi (SVM / SVC)", "category": "Algoritmalar", "difficulty": "İleri", "summary": "Sınıflar arasındaki geometrik boşluğu (marjin) maksimize eden karar hiper-düzlemini inşa eder.", "detailed_explanation": ["kernel='rbf': Radyal tabanlı çekirdek fonksiyonu ile veriyi sonsuz boyutlu uzaya taşıyarak doğrusal olmayan sınırları mükemmel ayırır.", "C=1.0: Marjin genişliği ile eğitim hataları arasındaki denge cezası.", "gamma='scale': Çekirdeğin etki yarıçapını otomatik ölçeklendirir.", "Mesafe tabanlı çalıştığı için StandardScaler ZORUNLUDUR."], "code": "from sklearn.pipeline import make_pipeline\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.svm import SVC\n\nmodel_svm = make_pipeline(\n    StandardScaler(),\n    SVC(kernel=\"rbf\", C=1.0, gamma=\"scale\")\n)", "output_type": "text", "output": "(SVM Modeli Hazır: Ölçekleme + RBF Çekirdek, C=1.0)"}, {"id": "h6-06", "week": "Hafta 6", "week_id": "h6", "slide_no": 37, "source_pdf": "hafta6.pdf", "title": "Algoritma 6: Gaussian Naive Bayes (GNB)", "category": "Algoritmalar", "difficulty": "Orta", "summary": "Özelliklerin birbirinden istatistiksel olarak bağımsız olduğunu varsayarak Bayes kuralıyla koşullu olasılık hesaplar.", "detailed_explanation": ["GaussianNB(): Sayısal özelliklerin normal (Gauss / çan eğrisi) dağılım sergilediğini varsayar.", "Çok hızlıdır, iteratif gradyan inişi gerektirmez; ortalama ve varyans formülleriyle anında eğitilir."], "code": "from sklearn.naive_bayes import GaussianNB\n\n# Olasılıksal Bayes modeli\nmodel_bayes = GaussianNB()", "output_type": "text", "output": "(Gaussian Naive Bayes Modeli Hazır: Normal Dağılım Varsayımı)"}, {"id": "h6-07", "week": "Hafta 6", "week_id": "h6", "slide_no": "46-47", "source_pdf": "hafta6.pdf", "title": "Tüm Modellerin ve Referans (Baseline) Modelin Tanımlanması", "category": "Model Kıyaslama", "difficulty": "İleri", "summary": "6 makine öğrenmesi algoritmasını ve taban çizgisi referansı olarak DummyClassifier'ı tek sözlükte toplar.", "detailed_explanation": ["DummyClassifier(strategy='most_frequent'): Hiçbir şey öğrenmeden daima en çok tekrar eden sınıfı tahmin eden 'akılsız' referans modeldir.", "Amaç: Eğitilen modellerin bu taban çizgisi başarımdan (Örn: %33) ne kadar üstün olduğunu kanıtlamaktır."], "code": "from sklearn.dummy import DummyClassifier\n\nmodels = {\n    \"KNN\": make_pipeline(StandardScaler(), KNeighborsClassifier(n_neighbors=5)),\n    \"Lojistik\": make_pipeline(StandardScaler(), LogisticRegression(C=1.0, max_iter=1000)),\n    \"Agac\": DecisionTreeClassifier(max_depth=3, random_state=42),\n    \"Orman\": RandomForestClassifier(n_estimators=100, max_depth=5, max_features=\"sqrt\", random_state=42),\n    \"SVM\": make_pipeline(StandardScaler(), SVC(kernel=\"rbf\", C=1.0, gamma=\"scale\")),\n    \"Bayes\": GaussianNB(),\n    \"Referans\": DummyClassifier(strategy=\"most_frequent\")\n}\n\nprint(f\"Toplam {len(models)} model yarışmaya hazır.\")", "output_type": "text", "output": "Toplam 7 model yarışmaya hazır."}, {"id": "h6-08", "week": "Hafta 6", "week_id": "h6", "slide_no": "48-49", "source_pdf": "hafta6.pdf", "title": "Iris Üzerinde 7 Modelin Tarafsız Kıyaslanması (compare)", "category": "Model Kıyaslama", "difficulty": "İleri", "summary": "Tüm modelleri aynı 5 katlı çapraz doğrulama üzerinde koşturarak Macro F1 skoruna göre sıralar.", "detailed_explanation": ["compare(X, y): 7 modeli sırayla eğitir, puanların ortalamasını (cv_f1) ve standart sapmasını (std) tabloya döker.", "kind='stable': Eşit puana sahip modellerde sözlük sırasını bozmaz.", "Sonuç: KNN, Lojistik Regresyon ve SVM %95 Macro F1 ile zirveyi paylaşırken, Referans model %22'de kalır."], "code": "cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)\n\ndef compare(X, y):\n    rows = []\n    for name, model in models.items():\n        r = cross_validate(model, X, y, cv=cv, scoring=\"f1_macro\")\n        rows.append({\n            \"model\": name,\n            \"cv_f1\": r[\"test_score\"].mean(),\n            \"std\": r[\"test_score\"].std()\n        })\n    return pd.DataFrame(rows).sort_values(\"cv_f1\", ascending=False, kind=\"stable\")\n\n# Iris 120 eğitim kaydı üzerinde kıyaslama\niris_cv = compare(X_i_train, y_i_train)\nprint(\"Iris Modeller Kıyaslama Tablosu:\")\nprint(iris_cv.round(3).to_string(index=False))", "output_type": "table", "output": "Iris Modeller Kıyaslama Tablosu:\n    model  cv_f1    std\n      KNN  0.950  0.031\n Lojistik  0.950  0.031\n      SVM  0.950  0.031\n    Orman  0.942  0.035\n    Bayes  0.942  0.035\n     Agac  0.925  0.045\n Referans  0.222  0.000"}, {"id": "h6-09", "week": "Hafta 6", "week_id": "h6", "slide_no": "51-52", "source_pdf": "hafta6.pdf", "title": "Seçilen Yöntemin Nihai Eğitimi ve Iris Test Karnesi", "category": "Model Testi", "difficulty": "İleri", "summary": "Tablonun ilk sırasındaki modeli alır, 120 verinin tümüyle eğitir ve 30 test verisinde değerlendirir.", "detailed_explanation": ["En yüksek CV skoruna sahip olan model yeni bir kopya olarak üretilir ve eğitilir.", "Son test doğruluk puanı %96.7 olarak gerçekleşir."], "code": "best_i_name = iris_cv.iloc[0][\"model\"]\nbest_i = clone(models[best_i_name])\nbest_i.fit(X_i_train, y_i_train)\n\npred_i = best_i.predict(X_i_test)\n\nprint(f\"Seçilen Model: {best_i_name}\")\nprint(\"Test Doğruluğu:\", round(accuracy_score(y_i_test, pred_i), 3))\nprint(\"Test Macro F1:\", round(f1_score(y_i_test, pred_i, average=\"macro\"), 3))\nprint(\"\\nSınıflandırma Raporu:\")\nprint(classification_report(y_i_test, pred_i, target_names=iris.target_names, zero_division=0))", "output_type": "text", "output": "Seçilen Model: KNN\nTest Doğruluğu: 0.967\nTest Macro F1: 0.967\n\nSınıflandırma Raporu:\n              precision    recall  f1-score   support\n\n      setosa       1.00      1.00      1.00        10\n  versicolor       0.91      1.00      0.95        10\n   virginica       1.00      0.90      0.95        10\n\n    accuracy                           0.97        30\n   macro avg       0.97      0.97      0.97        30"}, {"id": "h6-10", "week": "Hafta 6", "week_id": "h6", "slide_no": 54, "source_pdf": "hafta6.pdf", "title": "Wine Veri Setinde 7 Modelin Kıyaslanması ve Sonuç", "category": "Model Kıyaslama", "difficulty": "İleri", "summary": "Aynı 7 modeli Wine veri setinde yarıştırır; Lojistik Regresyon ve SVM'in %98.6 skorla liderliği aldığını gösterir.", "detailed_explanation": ["Wine gibi çok özellikli (13 kimyasal özellik) verilerde doğrusal karar sınırları çizen Lojistik Regresyon ve SVM modelleri olağanüstü performans sergiler."], "code": "wine = load_wine(as_frame=True)\nX_w, y_w = wine.data.copy(), wine.target.copy()\n\nX_w_train, X_w_test, y_w_train, y_w_test = train_test_split(\n    X_w, y_w, test_size=0.20, stratify=y_w, random_state=42\n)\n\nwine_cv = compare(X_w_train, y_w_train)\nprint(\"Wine Veri Seti Modeller Sıralaması:\")\nprint(wine_cv.round(3).to_string(index=False))\n\nbest_w_name = wine_cv.iloc[0][\"model\"]\nbest_w = clone(models[best_w_name])\nbest_w.fit(X_w_train, y_w_train)\n\npred_w = best_w.predict(X_w_test)\nprint(f\"\\nSeçilen Model ({best_w_name}) Test Doğruluğu: {round(accuracy_score(y_w_test, pred_w), 3)}\")", "output_type": "table", "output": "Wine Veri Seti Modeller Sıralaması:\n    model  cv_f1    std\n Lojistik  0.986  0.017\n      SVM  0.979  0.026\n    Orman  0.972  0.025\n      KNN  0.965  0.030\n    Bayes  0.965  0.030\n     Agac  0.909  0.048\n Referans  0.264  0.000\n\nSeçilen Model (Lojistik) Test Doğruluğu: 0.972"}];
+
+    let activeWeek = 'all';
+    let searchQuery = '';
+    let allOutputsExpanded = true;
+
+    // DOM Elements
+    const catalogList = document.getElementById('catalogList');
+    const searchInput = document.getElementById('searchInput');
+    const weekTabs = document.querySelectorAll('#weekTabs .tab-pill');
+    const emptyState = document.getElementById('emptyState');
+    const toggleAllOutputsBtn = document.getElementById('toggleAllOutputsBtn');
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeBtnText = document.getElementById('themeBtnText');
+
+    // Render Cards
+    function renderCards() {
+      const filtered = CATALOG.filter(item => {
+        const matchesWeek = activeWeek === 'all' || item.week_id === activeWeek;
+        const q = searchQuery.toLowerCase();
+        const matchesSearch = !q || 
+          item.title.toLowerCase().includes(q) ||
+          item.code.toLowerCase().includes(q) ||
+          item.summary.toLowerCase().includes(q) ||
+          item.category.toLowerCase().includes(q) ||
+          item.source_pdf.toLowerCase().includes(q) ||
+          item.detailed_explanation.some(e => e.toLowerCase().includes(q));
+        
+        return matchesWeek && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        catalogList.innerHTML = '';
+        emptyState.style.display = 'block';
+        return;
+      }
+
+      emptyState.style.display = 'none';
+      catalogList.innerHTML = filtered.map(item => `
+        <article class="code-card" id="${item.id}">
+          <div class="card-header">
+            <div>
+              <div class="card-meta">
+                <span class="badge-slide">${item.source_pdf} • Slayt ${item.slide_no}</span>
+                <span class="badge-category">${item.category}</span>
+                <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">${item.week}</span>
+              </div>
+              <h2 class="card-title">${item.title}</h2>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <!-- Left: Info & Explanation -->
+            <div class="col-info">
+              <div>
+                <div class="info-section-title">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                  </svg>
+                  Ne İşe Yarar? (Özet)
+                </div>
+                <p class="info-summary">${item.summary}</p>
+              </div>
+
+              <div>
+                <div class="info-section-title">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                  </svg>
+                  Satır Satır Teknik İnceleme
+                </div>
+                <ul class="explanation-list">
+                  ${item.detailed_explanation.map(exp => `<li class="explanation-item">${formatExplanation(exp)}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+
+            <!-- Right: Code and Output -->
+            <div class="col-code">
+              <div class="code-toolbar">
+                <span class="code-lang">Python Kod Bloğu</span>
+                <button class="copy-btn" onclick="copyCode(this, '${item.id}')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                  Kopyala
+                </button>
+              </div>
+              
+              <pre class="code-block"><code id="code-${item.id}">${escapeHtml(item.code)}</code></pre>
+
+              <!-- Output Box -->
+              <div class="output-container" id="out-wrap-${item.id}">
+                <div class="output-header" onclick="toggleOutput('${item.id}')">
+                  <div class="output-label">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>
+                    </svg>
+                    Çıktı (Execution Output)
+                  </div>
+                  <svg class="output-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </div>
+                <div class="output-content ${item.output_type === 'chart' ? 'chart-output' : ''}">${escapeHtml(item.output)}</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function formatExplanation(text) {
+      // format inline code with backticks or colons
+      return escapeHtml(text).replace(/`([^`]+)`/g, '<code>$1</code>');
+    }
+
+    // Copy Code function
+    window.copyCode = function(button, itemId) {
+      const item = CATALOG.find(x => x.id === itemId);
+      if (!item) return;
+
+      navigator.clipboard.writeText(item.code).then(() => {
+        button.classList.add('copied');
+        button.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Kopyalandı!
+        `;
+        setTimeout(() => {
+          button.classList.remove('copied');
+          button.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            Kopyala
+          `;
+        }, 2000);
+      });
+    };
+
+    // Output Toggle
+    window.toggleOutput = function(itemId) {
+      const wrap = document.getElementById(`out-wrap-${itemId}`);
+      if (wrap) {
+        wrap.classList.toggle('collapsed');
+      }
+    };
+
+    // Search filter
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value.trim();
+      renderCards();
+    });
+
+    // Week Tabs filter
+    weekTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        weekTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        activeWeek = tab.getAttribute('data-week');
+        renderCards();
+      });
+    });
+
+    // Toggle All Outputs
+    toggleAllOutputsBtn.addEventListener('click', () => {
+      allOutputsExpanded = !allOutputsExpanded;
+      const containers = document.querySelectorAll('.output-container');
+      containers.forEach(c => {
+        if (allOutputsExpanded) {
+          c.classList.remove('collapsed');
+        } else {
+          c.classList.add('collapsed');
+        }
+      });
+      toggleAllOutputsBtn.textContent = allOutputsExpanded ? 'Çıktıları Daralt' : 'Çıktıları Aç';
+    });
+
+    // Theme toggle
+    themeToggleBtn.addEventListener('click', () => {
+      const current = document.body.getAttribute('data-theme');
+      if (current === 'light') {
+        document.body.removeAttribute('data-theme');
+        themeBtnText.textContent = 'Açık Tema';
+      } else {
+        document.body.setAttribute('data-theme', 'light');
+        themeBtnText.textContent = 'Koyu Tema';
+      }
+    });
+
+    // Neuron Simulator Logic
+    const rngX1 = document.getElementById('rng_x1');
+    const rngW1 = document.getElementById('rng_w1');
+    const rngX2 = document.getElementById('rng_x2');
+    const rngW2 = document.getElementById('rng_w2');
+    const rngB = document.getElementById('rng_b');
+
+    const vX1 = document.getElementById('v_x1');
+    const vW1 = document.getElementById('v_w1');
+    const vX2 = document.getElementById('v_x2');
+    const vW2 = document.getElementById('v_w2');
+    const vB = document.getElementById('v_b');
+
+    const formulaEl = document.getElementById('neuronFormulaText');
+    const badgeEl = document.getElementById('neuronStatusBadge');
+
+    function updateNeuron() {
+      const x1 = parseFloat(rngX1.value);
+      const w1 = parseFloat(rngW1.value);
+      const x2 = parseFloat(rngX2.value);
+      const w2 = parseFloat(rngW2.value);
+      const b = parseFloat(rngB.value);
+
+      vX1.textContent = x1.toFixed(1);
+      vW1.textContent = w1.toFixed(1);
+      vX2.textContent = x2.toFixed(1);
+      vW2.textContent = w2.toFixed(1);
+      vB.textContent = b.toFixed(1);
+
+      const z = (w1 * x1) + (w2 * x2) + b;
+      formulaEl.textContent = `z = (${w1.toFixed(1)} × ${x1.toFixed(1)}) + (${w2.toFixed(1)} × ${x2.toFixed(1)}) + (${b.toFixed(1)}) = ${z.toFixed(2)}`;
+
+      if (z > 0) {
+        badgeEl.className = 'neuron-status neuron-active';
+        badgeEl.innerHTML = `● Çıktı: 1 (z = ${z.toFixed(2)} > 0 → Nöron Ateşlendi)`;
+      } else {
+        badgeEl.className = 'neuron-status neuron-silent';
+        badgeEl.innerHTML = `○ Çıktı: 0 (z = ${z.toFixed(2)} ≤ 0 → Nöron Sessiz)`;
+      }
+    }
+
+    [rngX1, rngW1, rngX2, rngW2, rngB].forEach(input => {
+      input.addEventListener('input', updateNeuron);
+    });
+
+    // Initial render
+    renderCards();
+    updateNeuron();
+  </script>
+</body>
+</html>
